@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="item">
+      <div class="item__text">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="item__circle"></div>
+    </div>
+
+    <style>
+      .item {
+        margin-top: 50px;
+        margin-left: 100px;
+        position: relative;
+        padding: 15px;
+        border: 1px solid #e3e3e3;
+        width: 250px;
+        transition: color .5s ease;
+        overflow: hidden;
+      }
+      .item.is-hover{
+        color: white;
+      }
+      .item__text {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        line-height: 22px;
+        color: inherit;
+      }
+      .item__circle {
+        position: absolute;
+        background-color: red;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        transition: width 0.5s ease, height 0.5s ease;
+        z-index: 0;
+        transform: translate(-50%,-50%);
+      }
+    </style>
+
+    <script>
+      const items = document.querySelectorAll('.item');
+      const circlePrefix = '__circle'
+      items.forEach(el => {
+        el.addEventListener('mouseenter', animateCircle);
+        el.addEventListener('mouseleave', animateCircle);
+      });
+      function enterHandler() {}
+      function animateCircle(e) {
+        const eps = 3.2
+        const el = e.target;
+        const circle = el.querySelector('.item' + circlePrefix)
+        const coords = el.getBoundingClientRect();
+        const left = coords.left;
+        const top = coords.top;
+        const x = e.clientX;
+        const y = e.clientY;
+        const dx = x - left
+        const dy = y - top
+        const width = e.type === 'mouseenter' ? eps * el.offsetWidth + 'px' : '0px'
+        const height = width
+        
+        if (e.type === 'mouseenter'){
+          el.classList.add('is-hover')
+        } else {
+          el.classList.remove('is-hover')
+        }
+
+        circle.style.cssText = `
+          top: ${dy}px; 
+          left: ${dx}px;
+          width: ${width};
+          height: ${height};
+        `;
+      }
+    </script>
+  </body>
+</html>
